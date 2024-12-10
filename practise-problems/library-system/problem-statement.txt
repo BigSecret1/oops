@@ -1,0 +1,6 @@
+Problem Statement: Library Management System
+
+
+You are tasked with designing a Library Management System using Object-Oriented Programming (OOP) concepts in
+Python. The system should manage books, users, and borrowing operations. Use abstraction, encapsulation, inheritance
+, and polymorphism to implement the solution
