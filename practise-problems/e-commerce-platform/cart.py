@@ -1,29 +1,51 @@
 from product import Product
-from typing import List
+from typing import List, Dict
+from user import User
 
 
 class Cart:
-    def __init__(self, user_id : int):
-        self.user_id : int = user_id
-        self.items : List[Product] = []
+    def __init__(self, user : User):
+        self.__user = user
+        self.__items : Dict[int, Dict[Product, int]] = {}
 
-    def add_product(self, product : Product):
-        if product.quantity > 0:
-            self.items.append(product)
-            print("Item has been added to the cart!!!")
+    @property
+    def items(self):
+        return self.__items
+
+    def add_product(self, product : Product, quantity : int):
+        if product.is_available(quantity):
+            if product.id in self.__items:
+                self.__items[product.id]['quantity'] = quantity
+            else:
+                self.__items[product.id] = {'product': product, 'quantity': quantity}
         else:
-            print("Item is out of stock")
+            raise ValueError(f"Product {product.name} is out of the stock")
 
-    def remove_product(self, item : Product):
-        self.items.remove(item)
-        print("Item has been removed from the cart")
+    def remove_product(self, product_id : int):
+        if product_id in self.__items:
+            del self.__items[product_id]
+        else:
+            raise ValueError("Product not in cart.")
 
     def display_items(self):
-        for item in self.items:
-            print(f"Name : {item.name} Quantity : {item.quantity} Price : {item.price}")
+        if not self.__items:
+            print("Cart is empty")
+        else:
+            print("Cart items")
+            for item in self.__items.values():
+                product : Product = item['product']
+                quantity : int = item['quantitiy']
+                print(f"Name : {product.name} Quantity: {quantity} Price : ${product.price * quantity}")
 
     def cart_total_price(self):
         total_amount : float = 0
-        for item in self.items:
-            total_amount += item.price
+        for item in self.items.values():
+            product : Product = item['product']
+            quantity : int = item['quantity']
+            total_amount += {product.price * quantity}
+
         print(f"Total car price is : {total_amount}")
+        return total_amount
+
+    def clear_car(self):
+        self.__items.clear()

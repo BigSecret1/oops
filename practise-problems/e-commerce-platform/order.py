@@ -1,20 +1,42 @@
 from product import Product
-from cart import Cart
+from user import User
 
 
-class Order:
-    def __init__(self, user_id : int, cart : Cart):
-        self.user_id : int = user_id
-        self.cart : Cart = cart
+class Order(User):
+    def __init__(self , user : User):
+        self.__user = user
+        self.products = []
+        self.__total_price : float = 0
 
     def place_order(self):
+        cart_items = self.__user.cart.items
+
+        if not cart_items:
+            raise ValueError("Cart is empty, add items to place an order"
+                             )
         total_purchase : float = 0
-        print(f"Order has been placed successfully by {self.user_id}")
 
-        #reduce quantity of purchased products
+        for item in self.cart.items.values():
+            product : Product = item['product']
+            quantity : int = item['quantity']
 
-        for item in self.cart.items:
-            print(f"Item : {item.name} Quantity : {item.quantity} Price : {item.price}")
-            total_purchase += item.price
-            self.cart.remove_product(item)
-        print(f"Total purchase amount is : {total_purchase}")
+            product.update_stock(quantity)
+
+            self.products.append((product, quantity))
+
+            self.__total_price = self.__user.cart.cart_total_price()
+            self.__user.cart.clear_car()
+
+            print("Order placed successfully")
+            self.display_order_details()
+
+    def display_order_details(self):
+        print(
+            "\nOrder Summary:")
+        print(
+            f"Customer: {self.__user.name}")
+        for product, quantity in self.__products:
+            print(
+                f"{product.name} - Quantity: {quantity}, Price: ${product.price * quantity}")
+        print(
+            f"Total Price: ${self.__total_price}")
