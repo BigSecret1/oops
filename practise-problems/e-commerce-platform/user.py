@@ -5,7 +5,7 @@ class User:
         self.__id : int = id
         self.__name : str = name
         self.__email : str = email
-        self.cart = Cart(self)
+        self.cart = Cart()
 
     @property
     def id(self):

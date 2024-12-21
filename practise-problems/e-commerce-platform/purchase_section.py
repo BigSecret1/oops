@@ -11,4 +11,4 @@ class PurchaseSection:
 
     def display_all_products(self):
         for product in self.__products:
-            print(f"Name : {product.name} Price : {product.price} Quantity : {product.quantity}")
+            print(f"Name : {product.name} Price : {product.price} Quantity : {product.stock}")

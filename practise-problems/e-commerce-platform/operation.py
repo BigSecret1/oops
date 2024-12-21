@@ -17,12 +17,28 @@ purchase_section.display_all_products()
 
 user = User(101,"John Doe","john@example.com")
 
-user.cart.add_product(product1, 432)
-user.cart.add_product(product2, 232)
+user.cart.add_product(product1, 12)
+user.cart.add_product(product2, 11)
 
 user.cart.display_items()
 
 order = Order(user)
 order.place_order()
 
-user.cart.display_items()
+# Shopping by user2
+user2 = User(11,"Alice Doe","Alice@example.com")
+
+user2.cart.display_items()
+
+
+user2.cart.add_product(product1, 12)
+user2.cart.add_product(product3, 2)
+
+user2.cart.display_items()
+
+order = Order(user2)
+order.place_order()
+
+user2.cart.display_items()
+
+

@@ -1,11 +1,9 @@
 from product import Product
 from typing import List, Dict
-from user import User
 
 
 class Cart:
-    def __init__(self, user : User):
-        self.__user = user
+    def __init__(self):
         self.__items : Dict[int, Dict[Product, int]] = {}
 
     @property
@@ -18,6 +16,7 @@ class Cart:
                 self.__items[product.id]['quantity'] = quantity
             else:
                 self.__items[product.id] = {'product': product, 'quantity': quantity}
+            print(f"{product.name} added in cart, Quantity : {quantity}")
         else:
             raise ValueError(f"Product {product.name} is out of the stock")
 
@@ -34,7 +33,7 @@ class Cart:
             print("Cart items")
             for item in self.__items.values():
                 product : Product = item['product']
-                quantity : int = item['quantitiy']
+                quantity : int = item['quantity']
                 print(f"Name : {product.name} Quantity: {quantity} Price : ${product.price * quantity}")
 
     def cart_total_price(self):
@@ -42,10 +41,10 @@ class Cart:
         for item in self.items.values():
             product : Product = item['product']
             quantity : int = item['quantity']
-            total_amount += {product.price * quantity}
+            total_amount += (product.price * quantity)
 
         print(f"Total car price is : {total_amount}")
         return total_amount
 
-    def clear_car(self):
+    def clear_cart(self):
         self.__items.clear()
